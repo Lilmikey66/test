@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <select name="" id="" v-model="city" @change = "getWeather()">
+            <option value="Toronto">Toronto</option>
+            <option value="Taipei">Taipei</option>
+            <option value="London">London</option>
+            <option value="Rio">Rio</option>
+        </select>
+
+        <div v-if ="city !='' "> <!-- 如果city不等於空值 -->
+            <div >
+                目前氣溫:{{datas.main.temp}}
+            </div>
+            <div>
+                體感溫度:{{datas.main.feels_like}}
+            </div>
+            <div>
+                濕度:{{datas.main.humidity}}%
+            </div>
+            <div>
+                {{datas.weather[0].description}}
+            </div>
+        </div>
+    </div>
+    <script>
+        // https://api.openweathermap.org/data/2.5/weather?&q=toronto&units=metric&appid=c7928b43b5545dcca307e23b78642600
+
+
+        // let url = 'https://api.openweathermap.org/data/2.5/weather?&q=toronto&units=metric&appid=c7928b43b5545dcca307e23b78642600';
+        // fetch(url)
+        // .then(res=>res.json())
+        // .then(data=>{
+        //     console.log(data);
+        // })
+
+        Vue.createApp({
+            data(){
+                return{
+                    datas:[],
+                    city:''
+                }
+            },
+            // created(){
+            // // created():vue載入時資料同時載入
+            // let url = 'https://api.openweathermap.org/data/2.5/weather?&q=toronto&units=metric&appid=c7928b43b5545dcca307e23b78642600';
+            // fetch(url)
+            // .then(res=>res.json())
+            // .then(data=>{
+            //     console.log(data);
+            //     this.datas = data;
+            //     })
+            // }
+            methods:{
+                getWeather(){
+                    // console.logs(this.city);
+                    let city = this.city;
+                    let url = 'https://api.openweathermap.org/data/2.5/weather?&q='+city+'&units=metric&appid=c7928b43b5545dcca307e23b78642600';
+                    fetch(url)
+                    .then(res=>res.json())
+                    .then(data=>{
+                        console.log(data)
+                        this.datas = data;
+                    })
+                }
+            }
+            
+        }).mount('#app')
+    </script>
+</body>
+</html>
