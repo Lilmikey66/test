@@ -6,39 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
 </head>
 <body>
     <div id="app">
-        <select name="" id="" v-model="city" @change = "getWeather()">
-            <option value="">Select</option>
-            <option value="Toronto">Toronto</option>
+        <select name="" id="" v-model="city" @change="getWeather()">
             <option value="Taipei">Taipei</option>
-            <option value="London">London</option>
-            <option value="Rio">Rio</option>
+            <option value="New york">New York</option>
+            <option value="Melbourne">Melbourne</option>
         </select>
 
-        <div v-if ="city !='' "> <!-- 如果city不等於空值 -->
+        <div v-if="city !='' ">
             <template v-for="(data,i) of datas">
-                <div>
+
+                <div style="margin-top:20px ;">
                     {{getTS[i]}}
                 </div>
                 <img :src="`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`" alt="">
-                <div>
-                    目前氣溫:{{data.main.temp}}
+                <div >
+                    目前溫度:{{data.main.temp}}
                 </div>
                 <div>
                     體感溫度:{{data.main.feels_like}}
                 </div>
                 <div>
-                    濕度:{{data.main.humidity}}%
-                </div>
-                <div>
                     {{data.weather[0].description}}
                 </div>
+                
             </template>
             <!-- {{getTS}} -->
         </div>
     </div>
+    
     <script>
         Vue.createApp({
             data(){
@@ -60,26 +59,31 @@
                 }
             },
             computed:{
-                //計算
                 getTS(){
                     return this.datas.map(d =>{
-                        let myDate = new Date(d.dt * 1000);
-                        //new Date 當下時間
+                        let myDate = new Date(d.dt*1000);
+
                         let year = myDate.getFullYear();
                         let month = myDate.getMonth()+1;
                         let date = myDate.getDate();
                         let day = myDate.getDay();
-                        let day_tw = ['日','一','二','三','四','五','六']
+                        let day_us = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
                         let hours = myDate.getHours();
                         let minutes = myDate.getMinutes();
-                        
-                        let output = `${year}年${month}月${date}日星期${day_tw[day]} ${hours}:${minutes}0`;
+                        let seconds = myDate.getSeconds();
+
+                        let output = `${year}/${month}/${date} ${day_us[day]} ${hours}:${minutes}0:${seconds}0`;
                         return output;
+
+
                     })
                 }
+
             }
-            
         }).mount('#app')
     </script>
 </body>
 </html>
+
+<!-- 在不加時間的前提下，為什麼必須加<template>，{{datas.main.temp}}沒辦法顯示 -->
+    <!-- (d.dt*1000)意思 -->

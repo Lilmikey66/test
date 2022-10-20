@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <select name="" id="" v-model="city" @change="getWeather()">
+            <option value="Taipei">Taipei</option>
+            <option value="London">London</option>
+            <option value="miami">Maimi</option>
+        </select>
+        <div v-if="city !='' ">
+            <div>
+                現在溫度:{{datas.main.temp}}
+            </div>
+            <div>
+                體感溫度:{{datas.main.feels_like}}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    city:'',
+                    datas:[]
+                }
+            },
+            methods:{
+                getWeather(){
+                    let city = this.city;
+                    let url = 'https://api.openweathermap.org/data/2.5/weather?&q='+city+'&units=metric&appid=c7928b43b5545dcca307e23b78642600';
+                    // console.log(url);
+                    fetch(url)
+                    .then(res =>res.json())
+                    .then(data=>{
+                        // console.log(data)
+                        this.datas=data;
+                    })
+
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
